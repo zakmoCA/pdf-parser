@@ -1,0 +1,26 @@
+[
+  {
+    "description": "GPO Single Power Outlet",
+    "issue": "Missing from delivery document"
+  },
+  {
+    "description": "CAT6 Data Cable (10m)",
+    "issue": "Missing from delivery document"
+  },
+  {
+    "description": "2-Gang Switch Plate",
+    "issue": "Missing from delivery document"
+  },
+  {
+    "description": "Power Outlet - GPO",
+    "issue": "Extra item in delivery not invoiced"
+  },
+  {
+    "description": "CAT6 Cable - 10m",
+    "issue": "Extra item in delivery not invoiced"
+  },
+  {
+    "description": "Switch Plate - 2 Gang",
+    "issue": "Extra item in delivery not invoiced"
+  }
+]
