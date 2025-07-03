@@ -1,0 +1,14 @@
+Supplier Invoice 
+Supplier: SupplierX Pty Ltd​
+Invoice Number: INV-4567​
+Date: 2025-06-20​
+Job Code: JOB-ONN1-901​
+ 
+Items:​
+1. GPO Single Power Outlet | Qty: 15 | Unit Price: $18.00​
+2. CAT6 Data Cable (10m) | Qty: 7 | Unit Price: $9.50​
+3. 2-Gang Switch Plate | Qty: 4 | Unit Price: $13.00​
+​
+Subtotal: $352.50​
+GST (10%): $35.25​
+Total: $387.75​
