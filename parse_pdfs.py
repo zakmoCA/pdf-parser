@@ -31,7 +31,7 @@ def parse_metadata_and_line_items(text):
 
     invoice_patterns = [
         r"Invoice\s+(?:Number|No\.?):\s*(INV-\d+)",  # Invoice Number: or Invoice No.: examples
-        r"\b(INV-\d+)\b"                             # Standalone INV-xxxx example, reference for later use in project
+        r"\b(INV-\d+)\b"  # Standalone INV-xxxx example, reference for later use in project
     ]
     for pattern in invoice_patterns:
         match = re.search(pattern, text, re.IGNORECASE)
@@ -44,18 +44,32 @@ def parse_metadata_and_line_items(text):
     result["job_code"] = clean_text(match.group(1)) if match else None
 
     # Line Items
-    item_pattern = re.compile(
+    invoice_item_pattern = re.compile(
         r"\d+\.\s*(.*?)\s*\|\s*Qty:\s*(\d+)\s*\|\s*Unit Price:\s*\$?([\d.]+)",
         re.IGNORECASE
     )
 
-    for match in item_pattern.findall(text):
-        description, qty, price = match
-        result["line_items"].append({
-            "description": description.strip(),
-            "quantity": int(qty),
-            "unit_price": float(price)
-        })
+    delivery_item_pattern = re.compile(
+        r"\d+\.\s*(.*?)\s*\|\s*Qty:\s*(\d+)",
+        re.IGNORECASE
+    )
+
+    matches = invoice_item_pattern.findall(text)
+    if matches:
+        for match in matches:
+            description, qty, price = match
+            result["line_items"].append({
+                "description": description.strip(),
+                "quantity": int(qty),
+                "unit_price": float(price)
+            })
+    else:
+        for match in delivery_item_pattern.findall(text):
+            description, qty = match
+            result["line_items"].append({
+                "description": description.strip(),
+                "quantity": int(qty)
+            })
 
     return result
 
