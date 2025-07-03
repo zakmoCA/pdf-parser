@@ -1,5 +1,5 @@
 from pathlib import Path
-import pymupdf  # PyMuPDF
+import pymupdf
 import json
 import re
 import unicodedata
@@ -31,7 +31,7 @@ def parse_metadata_and_line_items(text):
 
     invoice_patterns = [
         r"Invoice\s+(?:Number|No\.?):\s*(INV-\d+)",  # Invoice Number: or Invoice No.: examples
-        r"\b(INV-\d+)\b"  # Standalone INV-xxxx example, reference for later use in project
+        r"\b(INV-\d+)\b"  # Standalone INV-xxxx example, reference for later use in project with ONN1 supplier specifics
     ]
     for pattern in invoice_patterns:
         match = re.search(pattern, text, re.IGNORECASE)

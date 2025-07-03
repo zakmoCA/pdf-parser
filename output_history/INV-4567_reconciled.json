@@ -1,0 +1,66 @@
+{
+  "invoice_number": "INV-4567",
+  "job_code": "JOB-ONN1-901",
+  "supplier_name": "SupplierX Pty Ltd",
+  "reconciliation_status": "reconciled",
+  "matched_items": [
+    {
+      "invoice_description": "GPO Single Power Outlet",
+      "docket_description": "Power Outlet - GPO",
+      "quantity": 15
+    },
+    {
+      "invoice_description": "CAT6 Data Cable (10m)",
+      "docket_description": "CAT6 Cable - 10m",
+      "quantity": 7
+    },
+    {
+      "invoice_description": "2-Gang Switch Plate",
+      "docket_description": "Switch Plate - 2 Gang",
+      "quantity": 4
+    }
+  ],
+  "discrepancies": [],
+  "summary": "3 matched, 0 missing, 0 extra",
+  "original_invoice_json": {
+    "invoice_number": "INV-4567",
+    "supplier_name": "SupplierX Pty Ltd",
+    "job_code": "JOB-ONN1-901",
+    "line_items": [
+      {
+        "description": "GPO Single Power Outlet",
+        "quantity": 15,
+        "unit_price": 18.0
+      },
+      {
+        "description": "CAT6 Data Cable (10m)",
+        "quantity": 7,
+        "unit_price": 9.5
+      },
+      {
+        "description": "2-Gang Switch Plate",
+        "quantity": 4,
+        "unit_price": 13.0
+      }
+    ]
+  },
+  "original_delivery_json": {
+    "invoice_number": "INV-4567",
+    "supplier_name": "SupplierX Pty Ltd",
+    "job_code": "JOB-ONN1-901",
+    "line_items": [
+      {
+        "description": "Power Outlet - GPO",
+        "quantity": 15
+      },
+      {
+        "description": "CAT6 Cable - 10m",
+        "quantity": 7
+      },
+      {
+        "description": "Switch Plate - 2 Gang",
+        "quantity": 4
+      }
+    ]
+  }
+}

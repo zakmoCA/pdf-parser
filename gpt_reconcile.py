@@ -3,6 +3,7 @@ import json
 from openai import OpenAI
 from dotenv import load_dotenv
 import os
+from sheets_writer import write_reconciliation_to_sheet
 
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -119,8 +120,6 @@ def clean_gpt_summary(raw_text):
 
     return "\n".join(clean_lines).strip()
 
-
-
 def main():
     output_dir = Path("output")
     invoice_json_path = output_dir / "invoice_parsed.json"
@@ -134,36 +133,37 @@ def main():
     out_dir.mkdir(parents=True, exist_ok=True)
 
     try:
-        # extract the json from the gpt response
+        # extract json object from gpt reconciliations output
         json_start = result.find("{")
         json_end = result.rfind("}") + 1
         json_str = result[json_start:json_end]
-        parsed = json.loads(json_str)
+        parsed_result = json.loads(json_str)
 
-        # extract file name components
-        invoice_number = parsed.get("invoice_number", "unknown").replace("/", "-")
-        status = parsed.get("reconciliation_status", "unknown")
+        # file naming structure: invoice number and reconciliation status 
+        # ie. INV-2354_reconciled.json OR INV-2354_mismatch.json
+        invoice_number = parsed_result.get("invoice_number", "unknown").replace("/", "-")
+        status = parsed_result.get("reconciliation_status", "unknown")
         base_name = f"{invoice_number}_{status}"
 
-        # save json file
+        # save structured json
         with open(out_dir / f"{base_name}.json", "w") as f:
-            json.dump(parsed, f, indent=2)
+            json.dump(parsed_result, f, indent=2)
 
-        # extract plain-text summary (everything outside the JSON)
+        # save clean .txt summary 
         raw_text_summary = result[json_end:]
-        text_summary = clean_gpt_summary(raw_text_summary) # clean txt summary output of GPTisms in output
-
+        text_summary = clean_gpt_summary(raw_text_summary)
         with open(out_dir / f"{base_name}.txt", "w") as f:
             f.write(text_summary)
 
-
         print(f"✅ Reconciliation complete. Saved:\n- {base_name}.json\n- {base_name}.txt")
 
+        # write to google sheets
+        write_reconciliation_to_sheet(parsed_result)
+
     except Exception as e:
-        # fallback if GPT output not well formatted
         fallback_path = out_dir / "gpt_summary_raw.txt"
         with open(fallback_path, "w") as f:
-            f.write(result)
+            f.write(str(result))  # ensure write always receives a string
         print("⚠️ GPT output not parsable. Raw output saved:", fallback_path)
 
 
