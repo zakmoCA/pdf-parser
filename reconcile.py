@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 from difflib import SequenceMatcher
+import argparse
 
 def compare_line_items(invoice_items, delivery_items, fuzzy_threshold=0.8):
     discrepancies = []
@@ -51,9 +52,17 @@ def compare_line_items(invoice_items, delivery_items, fuzzy_threshold=0.8):
     return matched, discrepancies
 
 def main():
-    output_dir = Path("output")
-    invoice_json_path = output_dir / "invoice_parsed.json"
-    source_json_path = output_dir / "source_parsed.json"
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--source", choices=["uploads", "inbox"], default="uploads")
+    args = parser.parse_args()
+
+    base_dir = Path("local_src_native_output") if args.source == "uploads" else Path("email_src_native_output")
+    parsed_output_dir = base_dir / "parsed"
+    reconciled_output_dir = base_dir / "reconciled"
+    reconciled_output_dir.mkdir(parents=True, exist_ok=True)
+
+    invoice_json_path = parsed_output_dir / "invoice_parsed.json"
+    source_json_path = parsed_output_dir / "source_parsed.json"
 
     if not invoice_json_path.exists() or not source_json_path.exists():
         print("❌ Missing parsed JSON files. Run parsing first.")
@@ -70,13 +79,10 @@ def main():
         source_data.get("line_items", [])
     )
 
-    recon_dir = output_dir / "reconciliation"
-    recon_dir.mkdir(parents=True, exist_ok=True)
-
-    with open(recon_dir / "matched_items.json", "w") as f:
+    with open(reconciled_output_dir / "matched_items.json", "w") as f:
         json.dump(matched, f, indent=2)
 
-    with open(recon_dir / "discrepancies.json", "w") as f:
+    with open(reconciled_output_dir / "discrepancies.json", "w") as f:
         json.dump(discrepancies, f, indent=2)
 
     print("✅ Reconciliation complete.")

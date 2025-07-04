@@ -16,8 +16,9 @@ def write_reconciliation_to_sheet(data):
 
     # prep header and data row
     headers = [
-        "Invoice Number", "Supplier Name", "Job Code", "Status",
-        "Matched Items", "Missing Items", "Extra Items",
+        "Invoice Number", "Supplier Name", "Job Code",
+        "Source Doc Type", "Comparison Doc Type",
+        "Status", "Matched Items", "Missing Items", "Extra Items",
         "Discrepancy Count", "Summary"
     ]
 
@@ -25,13 +26,16 @@ def write_reconciliation_to_sheet(data):
         data.get("invoice_number"),
         data.get("supplier_name"),
         data.get("job_code"),
+        data.get("source_doc_type", "unknown"),
+        data.get("comparison_doc_type", "unknown"),
         data.get("reconciliation_status"),
         len(data.get("matched_items", [])),
         len([d for d in data.get("discrepancies", []) if d["type"] == "missing_item"]),
         len([d for d in data.get("discrepancies", []) if d["type"] == "extra_item"]),
         len(data.get("discrepancies", [])),
         data.get("summary")
-    ]
+]
+
 
     # add headers if first row is empty
     if not worksheet.cell(1, 1).value:

@@ -1,5 +1,13 @@
-.history
+*.history
 venv
 .env
 credentials/
-_pycache__
+*_pycache__
+local_src_gpt_output/
+local_src_native_output/
+email_src_gpt_output/
+email_src_native_output/
+*DS_Store
+main.py
+notes.md
+n8n_workflow.md
