@@ -8,6 +8,7 @@ local_src_native_output/
 email_src_gpt_output/
 email_src_native_output/
 *DS_Store
-main.py
 notes.md
 n8n_workflow.md
+db/scripts/init_db.sql
+db/scripts/seed_db.sql
